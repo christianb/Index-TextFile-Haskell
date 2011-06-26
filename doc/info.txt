@@ -1,0 +1,1 @@
+Funktion words liest einen String ein und trennt die Wörter nach Leerzeichen.
