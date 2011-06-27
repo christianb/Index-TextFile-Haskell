@@ -15,11 +15,14 @@ isHeadValid x
     | x == 'ü' || x == 'Ü' = True
     | otherwise = False
 
+-- Test if the tail of a word is valid
 isTailValid :: String -> Bool
-isTailValid [] = False
-isTailValid (c:[])
-    | (isHeadValid c || c == '-' || (c >= '0' && c <= '9')) = True
-    | otherwise = False
+isTailValid [] = True
 isTailValid (c:cs)
-    | (isHeadValid c || c == '-' || (c >= '0' && c <= '9')) = (True && isTailValid cs)
+    | isAnyCharValid = (True && isTailValid cs)
     | otherwise = False
+    where isAnyCharValid = isHeadValid c || c == '-' || (c >= '0' && c <= '9')
+    
+-- removes only words those pattern is correct
+cleanList :: [String] -> [String]
+cleanList cs = [word | word <- cs, isWordValid word]
