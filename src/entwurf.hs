@@ -61,8 +61,24 @@ words' [] = []
 words' (p:ps) = (zip wort_list (replicate (length wort_list) (snd p))) ++ words' ps
     where wort_list = words (fst p)
 
-{-- kombiniere die zeilennummern eines wortes in eine liste
-combine :: [(Wort,Int)] -> [(Wort,[Int])]
+combine :: [[(Wort,Int)]] -> [(Wort,[Int])]
+combine [] = []
+combine list = (fst (head (head list)), (map snd (head list))) : (combine (tail list))
 
--- sortiere wörter
+-- kombiniere die zeilennummern eines wortes in eine liste
+gather :: [(Wort,Int)] -> [[(Wort,Int)]]-> [[(Wort,Int)]]
+gather [] combined = combined
+gather list combined 
+    | not (isInList (head list) combined) = gather (tail list) ((collectSameWords (head list) list) : combined)
+    | otherwise = gather (tail list) combined
+
+-- collect all same wods from list
+collectSameWords :: (Wort,Int) -> [(Wort,Int)] -> [(Wort,Int)]
+collectSameWords pair list = filter (\ e -> (fst pair) == (fst e)) list
+
+isInList :: (Wort,Int) -> [[(Wort,Int)]] -> Bool
+isInList _ [] = False
+isInList pair combined = (elem (fst pair) (map fst (map head combined)))
+
+{-- sortiere wörter
 sort :: [(Wort,[Int])] -> [(Wort,[Int])]-}
