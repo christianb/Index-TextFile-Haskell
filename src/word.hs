@@ -26,3 +26,20 @@ isTailValid (c:cs)
 -- removes only words those pattern is correct
 cleanList :: [String] -> [String]
 cleanList cs = [word | word <- cs, isWordValid word]
+
+-- replace all invalid chars with blanks
+replaceInvalidCharWithSpace :: Char -> Char
+replaceInvalidCharWithSpace c 
+    | isTailValid (c:[]) = c
+    | otherwise = ' '
+
+-- replace all chars from string and returns that string
+replaceInvalidChars :: String -> String
+replaceInvalidChars word =  map replaceInvalidCharWithSpace word
+
+-- replace invalid chars from head
+replaceInvalidCharFromHead :: String -> String
+replaceInvalidCharFromHead [] = []
+replaceInvalidCharFromHead (w:ws)
+    | isHeadValid w = w:ws
+    | otherwise = replaceInvalidCharFromHead ws
