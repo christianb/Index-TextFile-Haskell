@@ -1,5 +1,7 @@
 import System.Environment   
-import Data.List  
+import Data.List    
+import System.Directory  
+import System.IO   
   
 replaceEqualWithSpace :: String -> String
 replaceEqualWithSpace [] = []
@@ -17,6 +19,20 @@ removeEqual pair =
 makeTupel :: String -> (String, String)
 makeTupel w = span ('='/=) w
 
+p :: IO ()
+p = print "call method for -p"
+
+t :: IO ()
+t = print "call method for -t"
+
+dispatch :: [(String, IO ())]  
+dispatch =  [ ("-p", p), ("-t", t)]
+
+getMyArgs :: [(String,String)] -> [String]
+getMyArgs [] = []
+getMyArgs (p:ps) = (fst p):(getMyArgs ps)
+
+{-
 main = do  
    args <- getArgs  
    progName <- getProgName  
@@ -25,5 +41,10 @@ main = do
    --putStrLn "The program name is:"  
    --putStrLn progName
    let tupels = map makeTupel args -- list with tupels
-   let tupels_cleanded = map removeEqual tupels
-   mapM print tupels_cleanded
+   let tupels_cleaned = map removeEqual tupels -- list with tupels without equall sign
+   mapM print tupels_cleaned
+   let only_args = getMyArgs tupels_cleaned
+   map only_args
+   --let (command:args) = tupels_cleaned
+   let (Just action) = lookup "-p" dispatch  
+   action-}
