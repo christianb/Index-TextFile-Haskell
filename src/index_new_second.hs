@@ -1,3 +1,6 @@
+import Data.List (sortBy)
+import Data.Char (toLower)
+
 type Text = String
 type Zeile = String
 type Wort = String
@@ -138,3 +141,16 @@ merge''' list temp
 -}
 collectSameFiles :: File -> [(File, Int)] -> [Int]
 collectSameFiles file list = map snd (filter (\ e -> (file) == (fst e)) list)
+
+
+compareMe :: Wort -> Wort -> Ordering
+compareMe [] [] = EQ
+compareMe [] _ = LT
+compareMe _ [] = GT
+compareMe w1 w2
+    | ord == EQ = compareMe (tail w1) (tail w2) 
+    | otherwise = ord
+    where ord = compareMe' (head w1) (head w2)
+
+compareMe' :: Char -> Char -> Ordering
+compareMe' c1 c2 = compare (toLower c1) (toLower c2)
