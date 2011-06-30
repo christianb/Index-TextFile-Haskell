@@ -142,15 +142,26 @@ merge''' list temp
 collectSameFiles :: File -> [(File, Int)] -> [Int]
 collectSameFiles file list = map snd (filter (\ e -> (file) == (fst e)) list)
 
+sortMe :: [(Wort, [(File, [Int])])] -> [(Wort, [(File, [Int])])]
+sortMe list = sortBy (\ x y -> compareMe (fst x) (fst y)) list
 
 compareMe :: Wort -> Wort -> Ordering
 compareMe [] [] = EQ
 compareMe [] _ = LT
 compareMe _ [] = GT
 compareMe w1 w2
-    | ord == EQ = compareMe (tail w1) (tail w2) 
-    | otherwise = ord
-    where ord = compareMe' (head w1) (head w2)
-
+    | ord_case_insensitive == EQ = 
+        if ord_case_sensitive == EQ
+            then compareMe (tail w1) (tail w2)
+            else ord_case_sensitive
+    | otherwise = ord_case_insensitive
+    where ord_case_insensitive = compareMe' (head w1) (head w2)
+          ord_case_sensitive = compareMe'' (head w1) (head w2)
+          
+-- case insensitive compare
 compareMe' :: Char -> Char -> Ordering
 compareMe' c1 c2 = compare (toLower c1) (toLower c2)
+
+-- case sensitive compare
+compareMe'' :: Char -> Char -> Ordering
+compareMe'' c1 c2 = compare c1 c2
