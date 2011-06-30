@@ -48,7 +48,7 @@ main = do
     let content = makePair content_list files 
     let idx = index content
     
-    print idx
+    print' idx
     
 
 {-main = do  

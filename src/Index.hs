@@ -1,5 +1,7 @@
 module Index
-(index
+(
+index
+, print'
 ) where
 
 import Data.List (sortBy)
@@ -172,3 +174,35 @@ compareMe' c1 c2 = compare (toLower c1) (toLower c2)
 -- case sensitive compare
 compareMe'' :: Char -> Char -> Ordering
 compareMe'' c1 c2 = compare c1 c2
+
+
+print' :: [(Wort, [(File, [Int])])] -> IO ()
+print' (list:lists) = do 
+    printWord (fst list)
+    --putStr " "
+    printFileList (snd list)
+    print' lists
+
+printWord :: String -> IO ()
+printWord word = do
+    putStr word
+
+printFileList :: [(File, [Int])] -> IO ()
+printFileList [] = return ()
+printFileList (list:lists) = do
+    putStr " "
+    printFile (fst list) (snd list)
+    printFileList lists
+
+printFile :: File -> [Int] -> IO ()
+printFile file list = do
+    putStr file
+    printLineNr list
+    putStrLn ""
+    
+printLineNr :: [Int] -> IO ()
+printLineNr [] = return ()
+printLineNr (l:list) = do
+    putStr " "
+    putStr (show l)
+    printLineNr list
