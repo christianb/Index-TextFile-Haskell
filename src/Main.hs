@@ -3,6 +3,8 @@ import Data.List
 import System.Directory  
 import System.IO   
   
+import Index  
+  
 replaceEqualWithSpace :: String -> String
 replaceEqualWithSpace [] = []
 replaceEqualWithSpace (w:ws) = 
@@ -38,14 +40,16 @@ makePair text files = zip text files
 
 main = do
     -- list with files
-    let files = ["girlfriend.txt", "todo.txt"]
+    let files = ["text1.txt", "text2.txt"]
     
     -- read several files
     content_list <- mapM readFile files
     
-    let pair = makePair content_list files 
+    let content = makePair content_list files 
+    let idx = index content
     
-    mapM print pair
+    print idx
+    
 
 {-main = do  
    args <- getArgs  

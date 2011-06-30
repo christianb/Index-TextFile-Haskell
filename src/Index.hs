@@ -1,3 +1,7 @@
+module Index
+(index
+) where
+
 import Data.List (sortBy)
 import Data.Char (toLower)
 
@@ -5,6 +9,9 @@ type Text = String
 type Zeile = String
 type Wort = String
 type File = String
+
+index :: [(Text,File)] -> [(Wort, [(File, [Int])])]
+index content = sortMe (mergeFiles (merge' (gather (changeStyleOfWords (ignoreHead (words' (addLn (ignoreTail (split content)))))))))
 
 split :: [(Text,File)] -> [([Zeile],File)]
 split list = [split' pair | pair <- list]
