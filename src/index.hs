@@ -32,8 +32,22 @@ getMyArgs :: [(String,String)] -> [String]
 getMyArgs [] = []
 getMyArgs (p:ps) = (fst p):(getMyArgs ps)
 
-{-
-main = do  
+-- get a list of text and a list of files and make a list of pairs
+makePair :: [String] -> [String] -> [(String,String)]
+makePair text files = zip text files
+
+main = do
+    -- list with files
+    let files = ["girlfriend.txt", "todo.txt"]
+    
+    -- read several files
+    content_list <- mapM readFile files
+    
+    let pair = makePair content_list files 
+    
+    mapM print pair
+
+{-main = do  
    args <- getArgs  
    progName <- getProgName  
    --putStrLn "The arguments are:"  

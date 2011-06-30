@@ -6,6 +6,7 @@ import System.IO
 type Text = String
 type Zeile = String
 type Wort = String
+type File = String
 
 -- trennt text in zeilen auf
 split :: Text -> [Zeile]
@@ -29,6 +30,9 @@ isTailValid (c:cs)
     | isAnyCharValid = (True && isTailValid cs)
     | otherwise = False
     where isAnyCharValid = isHeadValid c || c == '-' || (c >= '0' && c <= '9')
+
+ignore :: [Zeile] -> [Zeile]
+ignore list = ignoreHead (ignoreTail list)
 
 -- ungueltige Zeichen durch leerzeichen ersetzen
 ignoreTail :: [Zeile] -> [Zeile]
@@ -80,5 +84,39 @@ isInList :: (Wort,Int) -> [[(Wort,Int)]] -> Bool
 isInList _ [] = False
 isInList pair combined = (elem (fst pair) (map fst (map head combined)))
 
+addFileName :: [(Wort,[Int])] -> File -> [(Wort,(File,[Int]))]
+addFileName list file = [((fst p), (file, (snd p))) | p <- list]
+
+appendFileListsAndTupels :: [[(Wort,(File,[Int]))]] -> [(Wort,(File,[Int]))]
+appendFileListsAndTupels [] = []
+appendFileListsAndTupels (a:as) = a ++ appendFileListsAndTupels as
+
+gatherFileList :: [(Wort,(File,[Int]))] -> [[(Wort,(File,[Int]))]]
+gatherFileList list = (filter (\a -> (fst a) == fst (head list)) list) 
+
+combineFileList :: [(Wort,(File,[Int]))] -> [(Wort,[(File,[Int])])] -> [(Wort,[(File,[Int])])]
+combineFileList list = gatherFileList (head list)
+
+combineFileList' :: [(Wort,(File,[Int]))] -> [(File,[Int])]
+combineFileList' [] = []
+combineFileList' list = snd (head list):[] ++ combineFileList' (tail list)
+
+
+isInFileList :: Wort -> [(Wort,[(File,[Int])])] -> Bool
+isInFileList w list = elem w (map fst list)
+{-
+gatherFileListAndTupels :: [(Wort,(File,[Int]))] -> [[(Wort,(File,[Int]))]] -> [[(Wort,(File,[Int]))]]
+gatherFileListAndTupels [] combined = combined
+gatherFileListAndTupels list combined
+    | not (isInFileList (head list) combined) = gatherFileListAndTupels (tail list) ((collectSameWords (head list) list) : combined)
+    
+isInFileList :: (Wort,(File,[Int])) -> [[(Wort,(File,[Int]))]] -> Bool
+isInFileList _ [] = False
+isInFileList pair combined = (elem (fst pair) (map fst (map head combined)))
+-}
+{-combineFileListsAndTupels :: [(Wort,(File,[Int]))] -> [(Wort,[(File,[Int])])]
+combineFileListsAndTupels [] -> []
+combineFileListsAndTupels list -> fst (head list) : combineFileListsAndTupels (tail list)
+-}
 {-- sortiere wörter
 sort :: [(Wort,[Int])] -> [(Wort,[Int])]-}
