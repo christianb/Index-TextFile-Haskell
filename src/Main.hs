@@ -54,6 +54,10 @@ isPartOfWord (s:str) (w:word)
     | s == w = True && isPartOfWord str word
     | otherwise = False
 
+-- function to write index in file
+writeOutInFile :: File -> String -> IO ()
+writeOutInFile filepath content = writeFile filepath content 
+
 main = do
     -- list with files
     let files = ["text1.txt", "text2.txt"]
@@ -67,6 +71,8 @@ main = do
     --printIndex idx
     
     --printWordNumber idx
+    
+    putStr (printAsString idx)
     
     printIndexForWord "Hallob" idx
     

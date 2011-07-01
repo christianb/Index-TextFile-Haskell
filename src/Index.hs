@@ -3,6 +3,7 @@ module Index
 index
 , print'
 , printElement
+, printAsString
 ) where
 
 import Data.List (sortBy)
@@ -210,8 +211,22 @@ replaceUmlautInWort c
     | c == 'Ü' = "Ue"
     | c == 'ß' = "ss"
     | otherwise = c:[]
-    
 
+
+printAsString :: [(Wort, [(File, [Int])])] -> String
+printAsString [] = ""
+printAsString (l:list) = ((fst l) ++ (printFileListAsString (snd l)) ++ (printAsString list))
+
+printFileListAsString :: [(File, [Int])] -> String
+printFileListAsString [] = ""
+printFileListAsString (list:lists) = (" " ++ (printFileAsString (fst list) (snd list)) ++ "\n" ++ (printFileListAsString lists))
+
+printFileAsString :: File -> [Int] -> String
+printFileAsString file list = (file ++ (printLineNrAsString list))
+
+printLineNrAsString :: [Int] -> String
+printLineNrAsString [] = ""
+printLineNrAsString (l:list) = (" ") ++  (show l) ++ (printLineNrAsString list)
     
 print' :: [(Wort, [(File, [Int])])] -> IO ()
 print' [] = return ()
