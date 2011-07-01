@@ -2,6 +2,7 @@ module Index
 (
 index
 , print'
+, printElement
 ) where
 
 import Data.List (sortBy)
@@ -216,9 +217,21 @@ print' :: [(Wort, [(File, [Int])])] -> IO ()
 print' [] = return ()
 print' (list:lists) = do 
     printWord (fst list)
-    --putStr " "
     printFileList (snd list)
     print' lists
+
+{-
+printElementWord :: (Wort, [(File, [Int])]) -> IO ()
+printElementWord element = do
+    printWord (fst element)
+    printFileList (snd element)
+-}
+printElement :: [(Wort, [(File, [Int])])] -> IO ()
+printElement [] = return ()
+printElement (e:elements) = do
+    printWord (fst e)
+    printFileList (snd e)
+    printElement elements
 
 printWord :: String -> IO ()
 printWord word = do

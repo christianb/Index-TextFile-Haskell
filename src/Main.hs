@@ -25,6 +25,35 @@ printIndex index = print' index
 createIndex :: [(Text,File)] -> [(Wort, [(File, [Int])])]
 createIndex content = index content
 
+-- function for argument -q
+printIndexForWord :: Wort -> [(Wort, [(File, [Int])])] -> IO ()
+printIndexForWord word index
+    | length elements > 0 = printElement elements
+    | otherwise = putStrLn ("no elements for word: '" ++ word ++ "' in list!")
+    where elements = (filter (\ a -> (fst a) == word) index)
+
+-- function for argument -t
+printIndexForFile :: File -> [(Wort, [(File, [Int])])] -> IO ()
+printIndexForFile file index
+    | length elements > 0 = printElement elements
+    | otherwise = putStrLn ("no elements for file: '" ++ file ++ "' in list!")
+    where elements = (filter (\ a -> elem file (map fst (snd a)) ) index)
+
+-- function for argument -s
+printIndexForWordPartial :: String -> [(Wort, [(File, [Int])])] -> IO ()
+printIndexForWordPartial partialWord list
+    | length elements > 0 = printElement elements
+    | otherwise = putStrLn ("no elements for string: '" ++ partialWord ++ "' in list!")
+    where elements = (filter (\ a -> isPartOfWord partialWord (fst a)) list)
+
+isPartOfWord :: String -> Wort -> Bool
+isPartOfWord [] [] = True
+isPartOfWord [] _ = True
+isPartOfWord _ [] = False
+isPartOfWord (s:str) (w:word)
+    | s == w = True && isPartOfWord str word
+    | otherwise = False
+
 main = do
     -- list with files
     let files = ["text1.txt", "text2.txt"]
@@ -35,6 +64,12 @@ main = do
     let content = makePair content_list files 
     let idx = createIndex content
     
-    printIndex idx
+    --printIndex idx
     
-    printWordNumber idx
+    --printWordNumber idx
+    
+    printIndexForWord "Hallob" idx
+    
+    -- printIndexForFile "text3.txt" idx
+    
+    --printIndexForWordPartial "mod" idx
