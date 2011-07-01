@@ -20,14 +20,6 @@ split list = [split' pair | pair <- list]
 split' :: (Text,File) -> ([Zeile],File)
 split' pair = (lines (fst pair), snd pair)
 
-{-
-ignore :: [([Zeile],File)] -> [([Zeile],File)]
-ignore list = [(ignore' (fst pair), snd pair) | pair <- list]
-
-ignore' :: [Zeile] -> [Zeile]
-ignore' list = ignoreHead (ignoreTail list)
--}
-
 ignoreTail :: [([Zeile],File)] -> [([Zeile],File)]
 ignoreTail list = [(ignoreTail' (fst pair), snd pair) | pair <- list]
 
@@ -141,16 +133,6 @@ mergeFiles'' pairs temp
     | otherwise = mergeFiles'' (tail pairs) ( (fst (head pairs), collectSameFiles (fst (head pairs)) (pairs) ) : temp)
     where isFileInTempList = (elem (fst (head pairs)) (map fst temp))
     
---merge'' :: (Wort, [(File, Int)]) -> (Wort, [(File, [Int])])
---merge pair = (fst pair, merge''' (snd pair))
-{-
-merge''' :: [(File, Int)] -> [(File, [Int])] -> [(File, [Int])]
-merge''' [] temp = temp
-merge''' list temp 
-    | isFileInTempList = merge''' (tail list) temp
-    | otherwise = merge''' (tail list) (collectSameFiles (fst (head list)) list : temp)
-    where isFileInTempList = (elem (fst (head list)) (map fst temp))
--}
 collectSameFiles :: File -> [(File, Int)] -> [Int]
 collectSameFiles file list = map snd (filter (\ e -> (file) == (fst e)) list)
 
@@ -222,49 +204,3 @@ printFileAsString file list = (file ++ (printLineNrAsString list))
 printLineNrAsString :: [Int] -> String
 printLineNrAsString [] = ""
 printLineNrAsString (l:list) = (" ") ++  (show l) ++ (printLineNrAsString list)
-
-{-    
-print' :: [(Wort, [(File, [Int])])] -> IO ()
-print' [] = return ()
-print' (list:lists) = do 
-    printWord (fst list)
-    printFileList (snd list)
-    print' lists
-
-
-printElementWord :: (Wort, [(File, [Int])]) -> IO ()
-printElementWord element = do
-    printWord (fst element)
-    printFileList (snd element)
-
-printElement :: [(Wort, [(File, [Int])])] -> IO ()
-printElement [] = return ()
-printElement (e:elements) = do
-    printWord (fst e)
-    printFileList (snd e)
-    printElement elements
-
-printWord :: String -> IO ()
-printWord word = do
-    putStr word
-
-printFileList :: [(File, [Int])] -> IO ()
-printFileList [] = return ()
-printFileList (list:lists) = do
-    putStr " "
-    printFile (fst list) (snd list)
-    printFileList lists
-
-printFile :: File -> [Int] -> IO ()
-printFile file list = do
-    putStr file
-    printLineNr list
-    putStrLn ""
-    
-printLineNr :: [Int] -> IO ()
-printLineNr [] = return ()
-printLineNr (l:list) = do
-    putStr " "
-    putStr (show l)
-    printLineNr list
-    -}
