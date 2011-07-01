@@ -1,10 +1,5 @@
 module Index
-(
-index
-, print'
-, printElement
-, printAsString
-) where
+( index, printAsString) where
 
 import Data.List (sortBy)
 import Data.Char (toLower)
@@ -227,7 +222,8 @@ printFileAsString file list = (file ++ (printLineNrAsString list))
 printLineNrAsString :: [Int] -> String
 printLineNrAsString [] = ""
 printLineNrAsString (l:list) = (" ") ++  (show l) ++ (printLineNrAsString list)
-    
+
+{-    
 print' :: [(Wort, [(File, [Int])])] -> IO ()
 print' [] = return ()
 print' (list:lists) = do 
@@ -235,12 +231,12 @@ print' (list:lists) = do
     printFileList (snd list)
     print' lists
 
-{-
+
 printElementWord :: (Wort, [(File, [Int])]) -> IO ()
 printElementWord element = do
     printWord (fst element)
     printFileList (snd element)
--}
+
 printElement :: [(Wort, [(File, [Int])])] -> IO ()
 printElement [] = return ()
 printElement (e:elements) = do
@@ -271,3 +267,4 @@ printLineNr (l:list) = do
     putStr " "
     putStr (show l)
     printLineNr list
+    -}

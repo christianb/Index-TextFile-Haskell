@@ -19,7 +19,7 @@ printWordNumber index = print (length (map fst index))
 
 -- function for argument -p
 printIndex :: [(Wort, [(File, [Int])])] -> IO ()
-printIndex index = print' index
+printIndex index = putStr (printAsString index)
 
 -- function for argument -i
 createIndex :: [(Text,File)] -> [(Wort, [(File, [Int])])]
@@ -28,21 +28,21 @@ createIndex content = index content
 -- function for argument -q
 printIndexForWord :: Wort -> [(Wort, [(File, [Int])])] -> IO ()
 printIndexForWord word index
-    | length elements > 0 = printElement elements
+    | length elements > 0 = putStr (printAsString elements)
     | otherwise = putStrLn ("no elements for word: '" ++ word ++ "' in list!")
     where elements = (filter (\ a -> (fst a) == word) index)
 
 -- function for argument -t
 printIndexForFile :: File -> [(Wort, [(File, [Int])])] -> IO ()
 printIndexForFile file index
-    | length elements > 0 = printElement elements
+    | length elements > 0 = putStr (printAsString elements)
     | otherwise = putStrLn ("no elements for file: '" ++ file ++ "' in list!")
     where elements = (filter (\ a -> elem file (map fst (snd a)) ) index)
 
 -- function for argument -s
 printIndexForWordPartial :: String -> [(Wort, [(File, [Int])])] -> IO ()
 printIndexForWordPartial partialWord list
-    | length elements > 0 = printElement elements
+    | length elements > 0 = putStr (printAsString elements)
     | otherwise = putStrLn ("no elements for string: '" ++ partialWord ++ "' in list!")
     where elements = (filter (\ a -> isPartOfWord partialWord (fst a)) list)
 
@@ -72,10 +72,10 @@ main = do
     
     --printWordNumber idx
     
-    putStr (printAsString idx)
+    --putStr (printAsString idx)
     
-    printIndexForWord "Hallob" idx
+    --printIndexForWord "mo" idx
     
-    -- printIndexForFile "text3.txt" idx
+    --printIndexForFile "text1.txt" idx
     
-    --printIndexForWordPartial "mod" idx
+    printIndexForWordPartial "m" idx
