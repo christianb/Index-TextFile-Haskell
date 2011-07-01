@@ -99,9 +99,15 @@ isHeadValid x
     | x == '_' = True
     | x >= 'A' && x <= 'Z' = True
     | x >= 'a' && x <= 'z' = True
+    | isUmlaut x = True
+    | otherwise = False
+    
+isUmlaut :: Char -> Bool
+isUmlaut x
     | x == 'ä' || x == 'Ä' = True
     | x == 'ö' || x == 'Ö' = True
     | x == 'ü' || x == 'Ü' = True
+    | x == 'ß' = True
     | otherwise = False
     
 gather :: [(Wort, (File, Int))] -> [[(Wort, (File, Int))]]
@@ -164,19 +170,50 @@ compareMe w1 w2
             then compareMe (tail w1) (tail w2)
             else ord_case_sensitive
     | otherwise = ord_case_insensitive
-    where ord_case_insensitive = compareMe' (head w1) (head w2)
-          ord_case_sensitive = compareMe'' (head w1) (head w2)
+    where ord_case_insensitive
+            | (isUmlaut (head w1) && isUmlaut (head w2)) = compareMe (replaced_w1 ++ (tail w1)) (replaced_w2 ++ (tail w2))
+            | isUmlaut (head w1) = compareMe (replaced_w1 ++ (tail w1)) w2
+            | isUmlaut (head w2) = compareMe w1 (replaced_w2 ++ (tail w2))
+            | otherwise = compareInsensitive (head w1) (head w2)
+            where replaced_w1 = replaceUmlautInWort (head w1)
+                  replaced_w2 = replaceUmlautInWort (head w2)
+          ord_case_sensitive
+            | isUmlaut (head w1) && isUmlaut (head w2) = compareMe (replaced_w1 ++ (tail w1)) (replaced_w2 ++ (tail w2))
+            | isUmlaut (head w1) = compareMe (replaced_w1 ++ (tail w1)) w2
+            | isUmlaut (head w2) = compareMe w1 (replaced_w2 ++ (tail w2))
+            | otherwise = compareSensitive (head w1) (head w2)
+            where replaced_w1 = replaceUmlautInWort (head w1)
+                  replaced_w2 = replaceUmlautInWort (head w2)
           
 -- case insensitive compare
-compareMe' :: Char -> Char -> Ordering
-compareMe' c1 c2 = compare (toLower c1) (toLower c2)
+compareInsensitive :: Char -> Char -> Ordering
+compareInsensitive c1 c2 = compare (toLower c1) (toLower c2)
 
 -- case sensitive compare
-compareMe'' :: Char -> Char -> Ordering
-compareMe'' c1 c2 = compare c1 c2
+compareSensitive :: Char -> Char -> Ordering
+compareSensitive c1 c2 = compare c1 c2
 
+containUmlaute :: Wort -> Bool
+containUmlaute [] = False
+containUmlaute (w:wort)
+    | isUmlaut w = True
+    | otherwise = containUmlaute wort
 
+replaceUmlautInWort :: Char -> Wort
+replaceUmlautInWort c
+    | c == 'ä' = "ae"
+    | c == 'Ä' = "Ae"
+    | c == 'ö' = "oe"
+    | c == 'Ö' = "Oe"
+    | c == 'ü' = "ue"
+    | c == 'Ü' = "Ue"
+    | c == 'ß' = "ss"
+    | otherwise = c:[]
+    
+
+    
 print' :: [(Wort, [(File, [Int])])] -> IO ()
+print' [] = return ()
 print' (list:lists) = do 
     printWord (fst list)
     --putStr " "
