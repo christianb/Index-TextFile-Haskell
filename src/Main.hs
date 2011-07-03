@@ -60,7 +60,7 @@ writeOutInFile filepath content = writeFile filepath content
 
 main = do
     -- list with files
-    let files = ["Euler.txt"]
+    let files = ["Testdaten/Euler.txt"]
     
     -- read several files
     content_list <- mapM readFile files
