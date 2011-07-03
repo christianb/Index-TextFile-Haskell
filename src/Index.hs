@@ -10,7 +10,7 @@ type Wort = String
 type File = String
 
 index :: [(Text,File)] -> [(Wort, [(File, [Int])])]
-index content = sortMe (mergeFiles (merge' (gather (changeStyleOfWords (ignoreHead (words' (addLn (ignoreTail (split content)))))))))
+index content = sortMe (removeDoubleElements (mergeFiles (merge' (gather (changeStyleOfWords (ignoreHead (words' (addLn (ignoreTail (split content))))))))))
 
 split :: [(Text,File)] -> [([Zeile],File)]
 split list = [split' pair | pair <- list]
@@ -112,7 +112,6 @@ gather' list temp
 collectSameWords :: Wort -> [(Wort, (File, Int))] -> [(Wort, (File, Int))]
 collectSameWords word list = filter (\ e -> (word) == (fst e)) list
 
-
 merge' :: [[(Wort, (File, Int))]] -> [(Wort, [(File, Int)])] 
 merge' list = [merge'' sub_list | sub_list <- list]
 
@@ -136,6 +135,21 @@ mergeFiles'' pairs temp
 collectSameFiles :: File -> [(File, Int)] -> [Int]
 collectSameFiles file list = map snd (filter (\ e -> (file) == (fst e)) list)
 
+removeDoubleElements :: [(Wort, [(File, [Int])])] -> [(Wort, [(File, [Int])])]
+removeDoubleElements list = [(fst pair, removeDoubleElements' (snd pair)) | pair <- list]
+
+removeDoubleElements' :: [(File, [Int])] -> [(File, [Int])]
+removeDoubleElements' list = [removeDoubleElements'' pair | pair <- list]
+
+removeDoubleElements'' :: (File, [Int]) -> (File, [Int])
+removeDoubleElements'' pair = (fst pair, (removeDoubleElements'''( reverse (snd pair)) []) )
+
+removeDoubleElements''' :: [Int] -> [Int] -> [Int]
+removeDoubleElements''' [] temp = temp
+removeDoubleElements''' (l:list) temp 
+    | (elem l temp) = removeDoubleElements''' list temp
+    | otherwise = removeDoubleElements''' list (l:temp)
+
 sortMe :: [(Wort, [(File, [Int])])] -> [(Wort, [(File, [Int])])]
 sortMe list = sortBy (\ x y -> compareMe (fst x) (fst y)) list
 
@@ -144,10 +158,10 @@ compareMe [] [] = EQ
 compareMe [] _ = LT
 compareMe _ [] = GT
 compareMe w1 w2
-    | ord_case_insensitive == EQ = 
-        if ord_case_sensitive == EQ
-            then compareMe (tail w1) (tail w2)
-            else ord_case_sensitive
+    | ord_case_insensitive == EQ = compareMe (tail w1) (tail w2)
+        --if ord_case_sensitive == EQ
+            --then compareMe (tail w1) (tail w2)
+            --else ord_case_sensitive
     | otherwise = ord_case_insensitive
     where ord_case_insensitive
             | (isUmlaut (head w1) && isUmlaut (head w2)) = compareMe (replaced_w1 ++ (tail w1)) (replaced_w2 ++ (tail w2))
@@ -156,13 +170,13 @@ compareMe w1 w2
             | otherwise = compareInsensitive (head w1) (head w2)
             where replaced_w1 = replaceUmlautInWort (head w1)
                   replaced_w2 = replaceUmlautInWort (head w2)
-          ord_case_sensitive
+          {-ord_case_sensitive
             | isUmlaut (head w1) && isUmlaut (head w2) = compareMe (replaced_w1 ++ (tail w1)) (replaced_w2 ++ (tail w2))
             | isUmlaut (head w1) = compareMe (replaced_w1 ++ (tail w1)) w2
             | isUmlaut (head w2) = compareMe w1 (replaced_w2 ++ (tail w2))
             | otherwise = compareSensitive (head w1) (head w2)
             where replaced_w1 = replaceUmlautInWort (head w1)
-                  replaced_w2 = replaceUmlautInWort (head w2)
+                  replaced_w2 = replaceUmlautInWort (head w2)-}
           
 -- case insensitive compare
 compareInsensitive :: Char -> Char -> Ordering
