@@ -60,7 +60,7 @@ writeOutInFile filepath content = writeFile filepath content
 
 main = do
     -- list with files
-    let files = ["text1.txt", "text2.txt"]
+    let files = ["Testdaten/Euler.txt"]
     
     -- read several files
     content_list <- mapM readFile files
@@ -68,7 +68,7 @@ main = do
     let content = makePair content_list files 
     let idx = createIndex content
     
-    --printIndex idx
+    printIndex idx
     
     --printWordNumber idx
     
@@ -78,4 +78,4 @@ main = do
     
     --printIndexForFile "text1.txt" idx
     
-    printIndexForWordPartial "m" idx
+    --printIndexForWordPartial "m" idx
