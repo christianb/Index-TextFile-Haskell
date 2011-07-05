@@ -63,21 +63,22 @@ main = do
     -- list with files
     --let files = ["Testdaten/DasSchloss/K1.iso-latin1.txt","Testdaten/DasSchloss/K2.iso-latin1.txt","Testdaten/DasSchloss/K3.iso-latin1.txt","Testdaten/DasSchloss/K4.iso-latin1.txt","Testdaten/DasSchloss/K5.iso-latin1.txt","Testdaten/DasSchloss/K6.iso-latin1.txt","Testdaten/DasSchloss/K7.iso-latin1.txt","Testdaten/DasSchloss/K8.iso-latin1.txt","Testdaten/DasSchloss/K9.iso-latin1.txt","Testdaten/DasSchloss/K10.iso-latin1.txt","Testdaten/DasSchloss/K11.iso-latin1.txt","Testdaten/DasSchloss/K12.iso-latin1.txt","Testdaten/DasSchloss/K13.iso-latin1.txt","Testdaten/DasSchloss/K14.iso-latin1.txt","Testdaten/DasSchloss/K15.iso-latin1.txt","Testdaten/DasSchloss/K16.iso-latin1.txt","Testdaten/DasSchloss/K17.iso-latin1.txt","Testdaten/DasSchloss/K18.iso-latin1.txt","Testdaten/DasSchloss/K19.iso-latin1.txt","Testdaten/DasSchloss/K20.iso-latin1.txt"]
     --let files = ["Testdaten/Euler.txt"]
+    let files = ["Testdaten/Indextest0.txt"]
     
     -- read several files
-    --content_list <- mapM readFile files
-    --let content = makePair content_list files 
-    --let idx = createIndex content
+    content_list <- mapM readFile files
+    let content = makePair content_list files 
+    let idx = createIndex content
     
     -- define output file
     let outputFile = "out.txt"
     
     -- parse outputfile
-    content <- readFile outputFile
-    let idx = parse content
+    --content <- readFile outputFile
+    --let idx = parse content
     
-    printIndex idx
-    --writeFile outputFile (printAsString idx)
+    --printIndex idx
+    writeFile outputFile (printAsString idx)
     
     --printWordNumber idx
     

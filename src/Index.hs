@@ -10,7 +10,10 @@ type Wort = String
 type File = String
 
 index :: [(Text,File)] -> [(Wort, [(File, [Int])])]
-index content = sortMe (removeDoubleElements (mergeFiles (merge' (gather (changeStyleOfWords (ignoreHead (words' (addLn (ignoreTail (split content))))))))))
+index content = sortMe (removeEmptyEntries (removeDoubleElements (mergeFiles (merge' (gather (changeStyleOfWords (ignoreHead (words' (addLn (ignoreTail (split content)))))))))))
+
+removeEmptyEntries :: [(Wort, [(File, [Int])])] -> [(Wort, [(File, [Int])])]
+removeEmptyEntries list = filter (\ a -> (fst a) /= "") list
 
 split :: [(Text,File)] -> [([Zeile],File)]
 split list = [split' pair | pair <- list]
