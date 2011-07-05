@@ -1,3 +1,6 @@
+module Parser
+( parse ) where
+
 import Data.Char(isSpace, isNumber)
 
 type Text = String

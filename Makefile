@@ -2,8 +2,8 @@
 # Last update 03.07.2011
 
 # Files to be compiled
-OBJECTS = $(SRC)/Main.o \
-$(SRC)/Index.o \
+OBJECTS = $(SRC)/Main.hs \
+$(SRC)/Index.hs \
 
 # program name 
 NAME = index
@@ -12,7 +12,7 @@ NAME = index
 SRC = ./src
 
 install: 
-	ghc --make $(SRC)/Main.hs $(SRC)/Index.hs -o index
+	ghc --make $(SRC)/Main.hs $(SRC)/Index.hs $(SRC)/Parser.hs -o index
 
 clean:	FORCE
 	rm -f $(SRC)/*.o $(SRC)/*.hi 
