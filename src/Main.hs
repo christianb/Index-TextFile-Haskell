@@ -60,7 +60,8 @@ writeOutInFile filepath content = writeFile filepath content
 
 main = do
     -- list with files
-    let files = ["Testdaten/Euler.txt"]
+    let files = ["Testdaten/DasSchloss/K1.iso-latin1.txt","Testdaten/DasSchloss/K2.iso-latin1.txt","Testdaten/DasSchloss/K3.iso-latin1.txt","Testdaten/DasSchloss/K4.iso-latin1.txt","Testdaten/DasSchloss/K5.iso-latin1.txt","Testdaten/DasSchloss/K6.iso-latin1.txt","Testdaten/DasSchloss/K7.iso-latin1.txt","Testdaten/DasSchloss/K8.iso-latin1.txt","Testdaten/DasSchloss/K9.iso-latin1.txt","Testdaten/DasSchloss/K10.iso-latin1.txt","Testdaten/DasSchloss/K11.iso-latin1.txt","Testdaten/DasSchloss/K12.iso-latin1.txt","Testdaten/DasSchloss/K13.iso-latin1.txt","Testdaten/DasSchloss/K14.iso-latin1.txt","Testdaten/DasSchloss/K15.iso-latin1.txt","Testdaten/DasSchloss/K16.iso-latin1.txt","Testdaten/DasSchloss/K17.iso-latin1.txt","Testdaten/DasSchloss/K18.iso-latin1.txt","Testdaten/DasSchloss/K19.iso-latin1.txt","Testdaten/DasSchloss/K20.iso-latin1.txt"]
+    --let files = ["Testdaten/Euler.txt"]
     
     -- read several files
     content_list <- mapM readFile files
