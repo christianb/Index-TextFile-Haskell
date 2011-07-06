@@ -8,7 +8,6 @@ type Zeile = String
 type Wort = String
 type File = String
 
-
 parse :: String -> [(Wort, [(File, [Int])])]
 parse content = parse' (lines content)
 

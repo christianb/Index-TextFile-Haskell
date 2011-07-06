@@ -12,7 +12,7 @@ NAME = index
 SRC = ./src
 
 install: 
-	ghc --make $(SRC)/Main.hs $(SRC)/Index.hs $(SRC)/Parser.hs -o index
+	ghc --make $(SRC)/Main.hs $(SRC)/Index.hs $(SRC)/Parser.hs $(SRC)/Cmdlineargs.hs -o index
 
 clean:	FORCE
 	rm -f $(SRC)/*.o $(SRC)/*.hi 
