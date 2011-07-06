@@ -1,4 +1,5 @@
-module Cmdlineargs where
+module Cmdlineargs 
+(getOption) where
 
 import System.Environment(getArgs)
 import System.IO  
@@ -28,6 +29,9 @@ isOption str
 -- separate strings and create a list of (String,String) Pair
 getOption :: [String] -> [(Option, Value)]
 getOption list = [break (=='=') e | e <- list]
+
+removeEqSign :: [(Option, Value)] -> [(Option, Value)]
+removeEqSign list = [(fst a, tail (snd a))  | a <- list] 
 
 sortOption :: [String] -> [String]
 sortOption list = [if (isOption e) then e else "" | e <-list] 
@@ -65,6 +69,9 @@ main = do
    -- print onlyValidOptions
     let listOptions = getOnlyOptions args
     let pairOptions = getOption listOptions
+
+
+
     print pairOptions
     let inputFiles = getInputFiles args
     print inputFiles

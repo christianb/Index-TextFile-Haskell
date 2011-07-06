@@ -5,6 +5,7 @@ import System.IO
   
 import Index
 import Parser
+import Cmdlineargs
 
 type Text = String
 type Wort = String
