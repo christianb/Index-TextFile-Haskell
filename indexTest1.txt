@@ -1,0 +1,9 @@
+Alles Testdaten/Indextest1.txt 5
+auch Testdaten/Indextest1.txt 4
+Dies Testdaten/Indextest1.txt 1 4
+eine Testdaten/Indextest1.txt 1
+erste Testdaten/Indextest1.txt 2
+ist Testdaten/Indextest1.txt 1
+noch Testdaten/Indextest1.txt 4
+prima Testdaten/Indextest1.txt 5
+Testdatei Testdaten/Indextest1.txt 4

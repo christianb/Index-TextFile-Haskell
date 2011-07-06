@@ -1,0 +1,10 @@
+auch Testdaten/Indextest0.txt 5
+Dies Testdaten/Indextest0.txt 1 5
+eine Testdaten/Indextest0.txt 1
+es Testdaten/Indextest0.txt 7
+geht Testdaten/Indextest0.txt 6
+ist Testdaten/Indextest0.txt 1
+noch Testdaten/Indextest0.txt 5
+So Testdaten/Indextest0.txt 6
+Testdatei Testdaten/Indextest0.txt 5
+zweite Testdaten/Indextest0.txt 2
